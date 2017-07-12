@@ -1,17 +1,48 @@
 \documentclass[handout]{beamer}
 
+%\usepackage{pgfpages}
+%\setbeameroption{show notes}
+%\setbeameroption{show notes on second screen=right}
+
+\setbeamertemplate{caption}[numbered]
+
 \usepackage{tikz}
-\usetikzlibrary{arrows,shapes,positioning,shadows,trees}
+\usetikzlibrary{calc, matrix, arrows, automata, shapes, positioning, shadows, trees}
 \usepackage{graphicx}
 \usepackage{multimedia}
 \usepackage[latin1]{inputenc}
 \usecolortheme{lily}
 \setbeamercovered{transparent}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{color}
+
+
+\tikzset{basic/.style={draw}}
+\tikzset{input/.style={basic, circle}}
+\tikzset{bias/.style={basic, rectangle}}
+\tikzset{neuron/.style={basic, circle}}
+\tikzset{>=stealth, font=\scriptsize}
+\tikzset{sectors/.style n args={2}{%
+     circle, draw, minimum width=3.444em,
+     append after command={%
+         \pgfextra{ %
+            \draw (\tikzlastnode.north) -- (\tikzlastnode.south);
+            \path (\tikzlastnode.center) -- node[] {#1} (\tikzlastnode.west);
+            \path (\tikzlastnode.center) -- node[] {#2} (\tikzlastnode.east);
+         }
+      }
+   }
+}
+
+
+% argmax
+\newcommand{\argmax}[1]{\underset{#1}{\operatorname{arg}\,\operatorname{max}}\;}
 
 \title[\insertdate]{Nonparametric Bayes}
 
 \author{Omar Guti\'errez}
-\institute{@omargtz}
+\institute{@omargz}
 \date{June 15, 2015}
 
 \begin{document}
@@ -20,44 +51,192 @@
 \titlepage
 Mostly based on \textbf{A Tutorial on Bayesian Nonparametric Models} by Samuel J. Gershman.
 \end{frame}
+\note{
+    Nothing
+}
 
-\section{The Intuition Behind}
-\begin{frame}{Let's think in the next cases}
+\begin{frame}
+    \frametitle{Outline} 
+    \tableofcontents
+\end{frame}
+\note{
+    Nothing
+}
+
+\section{Introduction}
+\begin{frame}{Introduction}
+    \begin{itemize}
+        \item Before to start: Statistics was already there, even before than Machine Learning (ML)
+        \item What we do in ML is fitting a model to the data
+        \item That is, we adjust the values of certain parameters
+    \end{itemize}
+\end{frame}
+\note{
+    \begin{itemize}
+        \item Machine Learning in a nutshell
+            \begin{itemize}
+                \item Cloud - Internet
+                \item Ubiquituos computing - IoT
+                \item Eigenfaces
+                \item Statistics - Data Science
+                \item That is marketing :)
+            \end{itemize}
+    \end{itemize}
+}
+
+\begin{frame}{Linear Regression}
+\begin{figure}[H]
+    \centering
+    \input{diagrams/regression.tex}
+    \caption{Linear Regression}
+\end{figure}
+\end{frame}
+\note{
+    In linear models, we adjust the $\beta$ values
+}
+
+\begin{frame}{Neural Networks}
+\begin{figure}[H]
+    \centering
+    \input{diagrams/perceptron_and.tex}
+    \caption{Perceptron}
+\end{figure}
+\end{frame}
+\note{
+In neural networks, we adjust the value of the weights.
+}
+
+\begin{frame}{Hidden Markov Models}
+\begin{figure}[H]
+    \centering
+    \input{diagrams/hidden.tex}
+    \caption{Hidden Markov Models}
+\end{figure}
+\end{frame}
+\note{
+In HMM, we adjust the hidden states
+}
+
+\begin{frame}{Bayesian Learning}
+\Huge
+\begin{equation}
+    \textcolor{red}{P(h|D)} =
+    \frac{
+    \textcolor{green}{P(D|h)}
+    \textcolor{blue}{P(h)}
+    }
+    {\textcolor{brown}{P(D)}}
+\end{equation}
+\end{frame}
+\note{
+    \begin{itemize}
+        \item And now, let's talk about the models we are concerned with
+        \item The interesting facts in our datasets are governed by probabilities distributions ...
+        \item by reasoning about these probabilities we can do inferences
+        \item Bayesian reasoning give us a basis to manipulate probabilities
+        \item Bayesian is not exactly Bayesian, is the same as if we think in we are Newtonian only because we use Calculus
+        \item $P(h)$ initial probability for hypothesis $h$, prior probability, prior knowledge
+        \item $P(D)$ prior probability of the trainig data
+        \item $P(D|h)$ likelihood of $h$
+        \item $P(h|D)$ posterior probability of ...
+    \end{itemize}
+}
+
+\begin{frame}{Maximum Likelihood Estimation}
+\Large
+\begin{equation}
+    \begin{aligned}
+        h_{MAP} &\equiv \argmax {h \in H} P(h|D)\\
+                &= \argmax {h \in H} \frac{P(D|h)P(h)}{P(D)}\\
+                &= \argmax {h \in H} P(D|h)P(h)\\
+        h_{MLE} &= \argmax {h \in H} P(D|h)
+    \end{aligned}
+\end{equation}
+\end{frame}
+\note{
+    \begin{itemize}
+        \item If you want to learn machine learning put this in your hearth
+        \item Now we have seen the very basic idea behind Bayes reasoning...
+        \item ... we will return to this later
+    \end{itemize}
+}
+
+\section{Example: clustering}
+\begin{frame}{Data is a mess}
     \begin{itemize}
         \item The articles in Wikipedia
         \item The species in the planet
         \item The hashtags on Twitter
     \end{itemize}
 \end{frame}
+\note{
+Let's think in the next examples...
+The data is evolving
+}
 
-\begin{frame}{Intuition}
+\begin{frame}{How the problem is \textit{sometimes} addressed}
     \begin{itemize}
-        \item How many classes should I use in my mixture model?
-        \item How many factors should I use in factor analysis?
-        %\item Learning more from the data as we see it.
-        %\item Non-parametric models have infinite number $\theta$ parameters.
-        %\item Examples, topics in Wikipedia, species, social networks
+        \item Let's start with the classic approach
+        \item Let's do clustering
+        \item Let's use Gaussian Mixture Models (GMM)
+        \item We can fit several models and then compare them with some metric.
+        % add an original scatterplot
+        % add an image with clusters classified
+        % add an image with BIC
     \end{itemize}
 \end{frame}
-
-\section{Clustering}
-\begin{frame}{Clustering}
+\note{
 	\begin{itemize}
-        \item Let's consider the clustering
-        \item We want to get $k$ clusters
         \item We can use Gaussian Mixture Models
-	        \begin{itemize}
-                \item We learn the parameters of the Gaussians:
-	        \end{itemize}
-        \item $ \mu_{k} \overset{iid}{\sim} \mathcal{N}(\mu, \sigma^{2}) $
-        \item We can use techniques to evaluate the best clustering, e.g. Silhuotte, and then decide using cross-validation.
-        \item Another interesting approach is to use Bayesian Nonparametric (BNP) models
-        \item BNP models will build a model than can adapt its complexity to the data
-        % Put an image with clusters here.
+        \item How many classes should I use in my mixture model?
+        \item Do the connection with Maximum Likelihood, EM, and GMM
+        \item Do the connection with Maximum Likelihood, and linear models
+        %\item Learning more from the data as we see it.
 	\end{itemize}
+}
+
+\begin{frame}{How the problem is \textit{sometimes} addressed}
+    {\centering
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.75\textwidth, trim=4 4 4 4, clip]{code/gmm.jpg}
+        \caption{Points classified with GMM}
+    \end{figure}
+    }
 \end{frame}
 
-\begin{frame}{Bayesian parametric vs nonparametric models}
+\begin{frame}{How we can \textit{alternatively} approach the problem?}
+    {\centering
+    \begin{figure}[H]
+        \includegraphics[width=0.75\textwidth, trim=10 10 10 10, clip]{code/dpgmm.jpg}
+        \caption{Points classified with Infinite GMM}
+    \end{figure}
+    }
+\end{frame}
+
+\begin{frame}{How do we approach the problem?}
+	\begin{itemize}
+        \item Another interesting approach is to use Bayesian Nonparametric (BNP) models
+        \item BNP models will build a model than can adapt its complexity to the data
+	\end{itemize}
+\end{frame}
+\note{
+    \begin{itemize}
+        \item Learning more from the data as we see it
+    \end{itemize}
+}
+
+\section{Bayesian nonparametric models}
+\begin{frame}{Bayesian nonparametric models}
+
+    \begin{figure}[H]
+        \centering
+        \input{bayesian_models.tex}
+    \end{figure}
+
+\end{frame}
+
+\begin{frame}{Recap: Bayesian parametric vs nonparametric models}
     \begin{itemize}
         \item Traditional approach (finite)
            \begin{itemize}
@@ -75,17 +254,8 @@ Mostly based on \textbf{A Tutorial on Bayesian Nonparametric Models} by Samuel J
     \end{itemize}
 \end{frame}
 
-\section{Bayesian nonparametric models}
-\begin{frame}{Bayesian nonparametric models}
 
-    \begin{figure}[H]
-        \centering
-        \input{bayesian_models.tex}
-    \end{figure}
-
-\end{frame}
-
-\section{Chinese Process Restaurant}
+\section{Chinese Restaurant Process}
 \begin{frame}{Chinese Restaurant Process}
     {\centering
     \includegraphics[width=0.75\textwidth]{figures/crp.png}\par
