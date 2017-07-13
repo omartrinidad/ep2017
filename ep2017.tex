@@ -16,6 +16,7 @@
 \usepackage{pgfplots}
 \usepackage{pgfplotstable}
 \usepackage{color}
+\usepackage{subfigure}
 
 
 \tikzset{basic/.style={draw}}
@@ -117,6 +118,38 @@ In neural networks, we adjust the value of the weights.
 In HMM, we adjust the hidden states
 }
 
+\begin{frame}{Bertrand Russell\textsc{\char13}s Inductivist Turkey}
+\begin{figure}[H]
+    \centering
+    \subfigure[One Model]{
+        \input{diagrams/model_a.tex}
+    }\quad
+    \subfigure[Another Model]{
+        \input{diagrams/model_b.tex}
+    }
+    \caption{A comparison of models}
+\end{figure}
+\end{frame}
+\note{
+    Now that we know more about models, which is the best model?
+}
+
+\begin{frame}{Bertrand Russell\textsc{\char13}s Inductivist Turkey}
+\begin{figure}[H]
+    \centering
+    \subfigure[One Model]{
+        \input{diagrams/model_c.tex}
+    }\quad
+    \subfigure[Another Model]{
+        \input{diagrams/model_d.tex}
+    }
+    \caption{A comparison of models}
+\end{figure}
+\end{frame}
+\note{
+    Howevers, these models are incomplete
+}
+
 \begin{frame}{Bayesian Learning}
 \Huge
 \begin{equation}
@@ -196,25 +229,37 @@ The data is evolving
 }
 
 \begin{frame}{How the problem is \textit{sometimes} addressed}
-    {\centering
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.75\textwidth, trim=4 4 4 4, clip]{code/gmm.jpg}
-        \caption{Points classified with GMM}
+        \subfigure[2]{
+            \includegraphics[width=0.30\textwidth]{code/generated_images/bic_compo_2.jpg}
+        }\quad
+        \subfigure[3]{
+            \includegraphics[width=0.30\textwidth]{code/generated_images/bic_compo_3.jpg}
+        }\quad
+        \subfigure[4]{
+            \includegraphics[width=0.30\textwidth]{code/generated_images/bic_compo_4.jpg}
+        }\quad
+        \subfigure[5]{
+            \includegraphics[width=0.30\textwidth]{code/generated_images/bic_compo_5.jpg}
+        }
+        \subfigure[6]{
+            \includegraphics[width=0.30\textwidth]{code/generated_images/bic_compo_6.jpg}
+        }
+        \caption{A comparison of clusterings classified with GMM}
     \end{figure}
-    }
 \end{frame}
 
-\begin{frame}{How we can \textit{alternatively} approach the problem?}
-    {\centering
+\begin{frame}{How the problem is \textit{sometimes} addressed}
     \begin{figure}[H]
-        \includegraphics[width=0.75\textwidth, trim=10 10 10 10, clip]{code/dpgmm.jpg}
-        \caption{Points classified with Infinite GMM}
+        \centering
+        \includegraphics[width=0.75\textwidth]{code/generated_images/result_bic.jpg}
+        \caption{Bayesian Information Criterion (BIC)}
     \end{figure}
-    }
 \end{frame}
 
-\begin{frame}{How do we approach the problem?}
+
+\begin{frame}{How we can \textit{alternatively} approach the problem}
 	\begin{itemize}
         \item Another interesting approach is to use Bayesian Nonparametric (BNP) models
         \item BNP models will build a model than can adapt its complexity to the data
@@ -228,13 +273,47 @@ The data is evolving
 
 \section{Bayesian nonparametric models}
 \begin{frame}{Bayesian nonparametric models}
+    \begin{figure}[H]
+        \centering
+        \input{diagrams/bayesian_models.tex}
+    \end{figure}
+\end{frame}
+
+\section{Chinese Restaurant Process}
+\begin{frame}{Chinese Restaurant Process}
 
     \begin{figure}[H]
         \centering
-        \input{bayesian_models.tex}
+        \includegraphics[width=0.75\textwidth]{figures/crp2.png}\par
     \end{figure}
 
+    \begin{itemize}
+        \item Infinite number of tables
+        \item A sequence of customers entering the restaurant and sitting down
+        \item The first customer enters and sits at the first table
+        \item The second customer enters and sits...
+            \begin{itemize}
+                \item at the first table with probability $\frac{1}{1 + \alpha}$
+                \item at the second table with probability $\frac{\alpha}{1 + \alpha}$
+            \end{itemize}
+    \end{itemize}
 \end{frame}
+\note{
+    \begin{itemize}
+        \item We realize that CRP is a form of clustering: $K$ groups and each group with size $N_k$
+    \end{itemize}
+}
+
+
+\begin{frame}{How we can \textit{alternatively} approach the problem}
+    {\centering
+    \begin{figure}[H]
+        \includegraphics[width=0.75\textwidth]{code/generated_images/dpgmm.jpg}
+        \caption{Points classified with Infinite GMM}
+    \end{figure}
+    }
+\end{frame}
+
 
 \begin{frame}{Recap: Bayesian parametric vs nonparametric models}
     \begin{itemize}
@@ -254,27 +333,6 @@ The data is evolving
     \end{itemize}
 \end{frame}
 
-
-\section{Chinese Restaurant Process}
-\begin{frame}{Chinese Restaurant Process}
-    {\centering
-    \includegraphics[width=0.75\textwidth]{figures/crp.png}\par
-    }
-    \pause
-
-    \begin{itemize}
-        \item Imagine a restaurant with an infinite number of tables,
-        \item and a sequence of customers entering the restaurant and sitting down.
-        \item The first customer enters and sits at the first table
-        \item The second customer enters and sits...
-            \begin{itemize}
-                \item at the first table with probability $\frac{1}{1 + \alpha}$
-                \item at the second table with probability $\frac{\alpha}{1 + \alpha}$
-            \end{itemize}
-        \item We realize that CRP is a form of clustering: $K$ groups and each group with size $N_k$
-    \end{itemize}
-\end{frame}
-
 %\section{Bayesian Inference}
 %\begin{frame}{Bayesian Inference}
 %	\begin{itemize}
@@ -289,20 +347,12 @@ The data is evolving
 %	\end{itemize}
 %\end{frame}
 
-
 %\section{Python}
 %\begin{frame}{Python}
 %	\begin{itemize}
-%        \item *
+%        \item Datamicroscopes
+%        \item Datamicroscopes
 %	\end{itemize}
-%\end{frame}
-
-%\section{Beta and Dirichlet Distribution}
-%\begin{frame}{Dirichlet Distribution}
-%    \begin{itemize}
-%        \item $\beta$ distribution.
-%        \item Dirichlet distribution is a generalization of $\beta$ distribution.
-%    \end{itemize}
 %\end{frame}
 
 \begin{frame}{What else?}

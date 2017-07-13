@@ -32,22 +32,8 @@
 \node (comment2) [above right = of c2] {Infinite};
     \draw [->, thick] (comment2) to [in = 110] (c2);
 
+\node (comment2) [above right = of c2] {Infinite};
+    \draw [->, thick] (comment2) to [in = 110] (c2);
 
-% The second level, relatively positioned nodes
-%\begin{scope}[every node/.style={level 3}]
-%\node [below of = c1, xshift=15pt] (c11) {Setting shape};
-%\node [below of = c11] (c12) {Choosing color};
-%\node [below of = c12] (c13) {Adding shading};
-
-%\node [below of = c2, xshift=15pt] (c21) {Using a Matrix};
-%\node [below of = c21] (c22) {Relatively};
-%\end{scope}
-
-% lines from each level 1 node to every one of its "children"
-%\foreach \value in {1,2,3}
-%  \draw[->] (c1.195) |- (c1\value.west);
-
-%\foreach \value in {1,...,4}
-%  \draw[->] (c2.195) |- (c2\value.west);
 
 \end{tikzpicture}
