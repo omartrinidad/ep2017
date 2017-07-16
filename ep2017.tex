@@ -1,7 +1,7 @@
 \documentclass[handout]{beamer}
 
 %\usepackage{pgfpages}
-%\setbeameroption{show notes}
+%%\setbeameroption{show notes}
 %\setbeameroption{show notes on second screen=right}
 
 \setbeamertemplate{caption}[numbered]
@@ -43,7 +43,7 @@
 \title[\insertdate]{Nonparametric Bayes}
 
 \author{Omar Guti\'errez}
-\institute{@omargz}
+\institute{@trinogz}
 \date{June 15, 2015}
 
 \begin{document}
@@ -67,7 +67,7 @@ Mostly based on \textbf{A Tutorial on Bayesian Nonparametric Models} by Samuel J
 \section{Introduction}
 \begin{frame}{Introduction}
     \begin{itemize}
-        \item Before to start: Statistics was already there, even before than Machine Learning (ML)
+        %\item Before to start: Statistics was already there, even before than Machine Learning (ML)
         \item What we do in ML is fitting a model to the data
         \item That is, we adjust the values of certain parameters
     \end{itemize}
@@ -207,6 +207,7 @@ Let's think in the next examples...
 The data is evolving
 }
 
+\subsection{Traditional Approach}
 \begin{frame}{How the problem is \textit{sometimes} addressed}
     \begin{itemize}
         \item Let's start with the classic approach
@@ -258,7 +259,7 @@ The data is evolving
     \end{figure}
 \end{frame}
 
-
+\subsection{Alternative Approach}
 \begin{frame}{How we can \textit{alternatively} approach the problem}
 	\begin{itemize}
         \item Another interesting approach is to use Bayesian Nonparametric (BNP) models
@@ -271,7 +272,6 @@ The data is evolving
     \end{itemize}
 }
 
-\section{Bayesian nonparametric models}
 \begin{frame}{Bayesian nonparametric models}
     \begin{figure}[H]
         \centering
@@ -279,7 +279,6 @@ The data is evolving
     \end{figure}
 \end{frame}
 
-\section{Chinese Restaurant Process}
 \begin{frame}{Chinese Restaurant Process}
 
     \begin{figure}[H]
@@ -304,7 +303,6 @@ The data is evolving
     \end{itemize}
 }
 
-
 \begin{frame}{How we can \textit{alternatively} approach the problem}
     {\centering
     \begin{figure}[H]
@@ -314,7 +312,25 @@ The data is evolving
     }
 \end{frame}
 
+\begin{frame}{What else can be done?}
+    {\centering
+    \begin{figure}[H]
+        \includegraphics[width=0.75\textwidth]{figures/mnist.png}
+        \caption{Digit recognition (datamicroscopes)}
+    \end{figure}
+    }
+\end{frame}
 
+\begin{frame}{What else can be done?}
+    {\centering
+    \begin{figure}[H]
+        \includegraphics[width=0.75\textwidth]{figures/topic_modeling.png}
+        \caption{Topic Modeling (datamicroscopes)}
+    \end{figure}
+    }
+\end{frame}
+
+\section{Conclusions}
 \begin{frame}{Recap: Bayesian parametric vs nonparametric models}
     \begin{itemize}
         \item Traditional approach (finite)
@@ -333,6 +349,13 @@ The data is evolving
     \end{itemize}
 \end{frame}
 
+\begin{frame}{Libraries in Python}
+	\begin{itemize}
+        \item Sklearn
+        \item Datamicroscopes
+	\end{itemize}
+\end{frame}
+
 %\section{Bayesian Inference}
 %\begin{frame}{Bayesian Inference}
 %	\begin{itemize}
@@ -347,19 +370,19 @@ The data is evolving
 %	\end{itemize}
 %\end{frame}
 
-%\section{Python}
-%\begin{frame}{Python}
-%	\begin{itemize}
-%        \item Datamicroscopes
-%        \item Datamicroscopes
-%	\end{itemize}
-%\end{frame}
-
-\begin{frame}{What else?}
+\begin{frame}{What else to learn?}
     \begin{itemize}
-        %\item $\beta$ distribution.
-        \item Dirichlet distribution is a generalization of $\beta$ distribution.
+        \item What is the $\beta$ distribution?
+        \item What is the Dirichlet distribution?
         \item Dirichlet process
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{References}
+    \begin{itemize}
+        \item \textbf{Machine Learning} by Tom Mitchell
+        \item \textbf{A Tutorial on Bayesian Nonparametric Models} by Samuel J. Gershman
+        \item \textbf{datamicroscopes} library
     \end{itemize}
 \end{frame}
 
